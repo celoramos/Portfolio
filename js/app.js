@@ -109,6 +109,11 @@
       lbl_email: "Seu E-mail",
       lbl_msg: "Mensagem",
       btn_submit: "Enviar mensagem",
+      form_required: "Por favor, preencha todos os campos obrigatórios.",
+      form_sending: "Enviando mensagem...",
+      form_success: "Mensagem enviada com sucesso! Obrigado pelo contato.",
+      form_error:
+        "Não foi possível enviar. Tente novamente ou escreva para celoramos.dev@gmail.com.",
       copy_btn: "copiar",
       copied_btn: "copiado! ✓",
       footer_text: "Editado no dia 15/08/2026",
@@ -217,6 +222,11 @@
       lbl_email: "Your Email",
       lbl_msg: "Message",
       btn_submit: "Send message",
+      form_required: "Please fill in all required fields.",
+      form_sending: "Sending message...",
+      form_success: "Message sent successfully! Thank you.",
+      form_error:
+        "Could not send. Please try again or email celoramos.dev@gmail.com.",
       copy_btn: "copy",
       copied_btn: "copied! ✓",
       footer_text: "Edited on 08/15/2026",
@@ -729,6 +739,13 @@
 
     var statusEl = form.querySelector("[data-status]");
 
+    function setStatus(key, modifier) {
+      if (!statusEl) return;
+      statusEl.textContent = i18nDict[currentLang][key];
+      statusEl.className =
+        "form__status" + (modifier ? " form__status--" + modifier : "");
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var nome = form.querySelector("#f-nome").value.trim();
@@ -743,21 +760,11 @@
       }
 
       if (!nome || !email || !msg) {
-        if (statusEl) {
-          statusEl.textContent =
-            currentLang === "pt"
-              ? "Por favor, preencha todos os campos obrigatórios."
-              : "Please fill in all required fields.";
-          statusEl.className = "form__status form__status--err";
-        }
+        setStatus("form_required", "err");
         return;
       }
 
-      if (statusEl) {
-        statusEl.textContent =
-          currentLang === "pt" ? "Enviando mensagem..." : "Sending message...";
-        statusEl.className = "form__status";
-      }
+      setStatus("form_sending");
 
       var submitBtn = form.querySelector("[type=submit]");
       if (submitBtn) submitBtn.disabled = true;
@@ -782,23 +789,11 @@
         })
         .then(function (data) {
           if (!data.success) throw new Error(data.message);
-          if (statusEl) {
-            statusEl.textContent =
-              currentLang === "pt"
-                ? "Mensagem enviada com sucesso! Obrigado pelo contato."
-                : "Message sent successfully! Thank you.";
-            statusEl.className = "form__status form__status--ok";
-          }
+          setStatus("form_success", "ok");
           form.reset();
         })
         .catch(function () {
-          if (statusEl) {
-            statusEl.textContent =
-              currentLang === "pt"
-                ? "Não foi possível enviar. Tente novamente ou escreva para celoramos.dev@gmail.com."
-                : "Could not send. Please try again or email celoramos.dev@gmail.com.";
-            statusEl.className = "form__status form__status--err";
-          }
+          setStatus("form_error", "err");
         })
         .then(function () {
           if (submitBtn) submitBtn.disabled = false;
