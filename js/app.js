@@ -1,6 +1,10 @@
 (function () {
   "use strict";
 
+  // Web3Forms: gerar a key em https://web3forms.com com celoramos.dev@gmail.com
+  var WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+  var WEB3FORMS_ACCESS_KEY = "6498a6aa-5bbe-4b86-946f-a21b1a25f6c6";
+
   var i18nDict = {
     pt: {
       nav_sobre: "Sobre",
@@ -678,7 +682,7 @@
         var emailEl = document.querySelector("[data-email]");
         var textToCopy = emailEl
           ? emailEl.textContent.trim()
-          : "celoramosdev@gmail.com";
+          : "celoramos.dev@gmail.com";
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard
@@ -748,16 +752,50 @@
         statusEl.className = "form__status";
       }
 
-      setTimeout(function () {
-        if (statusEl) {
-          statusEl.textContent =
-            currentLang === "pt"
-              ? "Mensagem enviada com sucesso! Obrigado pelo contato."
-              : "Message sent successfully! Thank you.";
-          statusEl.className = "form__status form__status--ok";
-        }
-        form.reset();
-      }, 1000);
+      var submitBtn = form.querySelector("[type=submit]");
+      if (submitBtn) submitBtn.disabled = true;
+
+      fetch(WEB3FORMS_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: "Nova mensagem do portfolio - " + nome,
+          from_name: "Portfolio",
+          name: nome,
+          email: email,
+          message: msg,
+        }),
+      })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          if (!data.success) throw new Error(data.message);
+          if (statusEl) {
+            statusEl.textContent =
+              currentLang === "pt"
+                ? "Mensagem enviada com sucesso! Obrigado pelo contato."
+                : "Message sent successfully! Thank you.";
+            statusEl.className = "form__status form__status--ok";
+          }
+          form.reset();
+        })
+        .catch(function () {
+          if (statusEl) {
+            statusEl.textContent =
+              currentLang === "pt"
+                ? "Não foi possível enviar. Tente novamente ou escreva para celoramos.dev@gmail.com."
+                : "Could not send. Please try again or email celoramos.dev@gmail.com.";
+            statusEl.className = "form__status form__status--err";
+          }
+        })
+        .then(function () {
+          if (submitBtn) submitBtn.disabled = false;
+        });
     });
   }
 
