@@ -110,6 +110,7 @@
       lbl_msg: "Mensagem",
       btn_submit: "Enviar mensagem",
       form_required: "Por favor, preencha todos os campos obrigatórios.",
+      form_email_invalid: "Digite um e-mail válido, ex: nome@empresa.com.",
       form_sending: "Enviando mensagem...",
       form_success: "Mensagem enviada com sucesso! Obrigado pelo contato.",
       form_error:
@@ -223,6 +224,7 @@
       lbl_msg: "Message",
       btn_submit: "Send message",
       form_required: "Please fill in all required fields.",
+      form_email_invalid: "Enter a valid email, e.g. name@company.com.",
       form_sending: "Sending message...",
       form_success: "Message sent successfully! Thank you.",
       form_error:
@@ -761,6 +763,12 @@
 
       if (!nome || !email || !msg) {
         setStatus("form_required", "err");
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setStatus("form_email_invalid", "err");
+        form.querySelector("#f-email").focus();
         return;
       }
 
