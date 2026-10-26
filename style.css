@@ -19,6 +19,7 @@
   --accent-alpha: rgba(45, 186, 78, 0.15);
   --accent-glow: rgba(45, 186, 78, 0.4);
   --border: var(--gh-border);
+  --danger: #f85149;
 
   --font-heading:
     "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -41,6 +42,7 @@
   --accent-alpha: rgba(40, 167, 69, 0.12);
   --accent-glow: rgba(40, 167, 69, 0.3);
   --border: #e1e4e8;
+  --danger: #cf222e;
 }
 
 *,
@@ -1031,7 +1033,7 @@ p.lead {
 .field__err {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #f85149;
+  color: var(--danger);
 }
 
 .form__status {
@@ -1042,6 +1044,10 @@ p.lead {
 
 .form__status--ok {
   color: var(--accent);
+}
+
+.form__status--err {
+  color: var(--danger);
 }
 
 .contact-icon {
