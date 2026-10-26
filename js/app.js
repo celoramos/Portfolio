@@ -117,7 +117,7 @@
         "Não foi possível enviar. Tente novamente ou escreva para celoramos.dev@gmail.com.",
       copy_btn: "copiar",
       copied_btn: "copiado! ✓",
-      footer_text: "Editado no dia 15/08/2026",
+      footer_text: "Editado no dia 26/10/2026",
       footer_by: "Desenvolvido por Marcelo Ramos",
     },
     en: {
@@ -231,7 +231,7 @@
         "Could not send. Please try again or email celoramos.dev@gmail.com.",
       copy_btn: "copy",
       copied_btn: "copied! ✓",
-      footer_text: "Edited on 08/15/2026",
+      footer_text: "Edited on 10/26/2026",
       footer_by: "Developed by Marcelo Ramos",
     },
   };
