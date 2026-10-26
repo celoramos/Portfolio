@@ -734,6 +734,13 @@
       var nome = form.querySelector("#f-nome").value.trim();
       var email = form.querySelector("#f-email").value.trim();
       var msg = form.querySelector("#f-msg").value.trim();
+      var botcheck = form.querySelector("[name=botcheck]");
+
+      // Honeypot: so bots marcam o campo oculto; finge sucesso sem enviar
+      if (botcheck && botcheck.checked) {
+        form.reset();
+        return;
+      }
 
       if (!nome || !email || !msg) {
         if (statusEl) {
